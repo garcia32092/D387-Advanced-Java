@@ -1,9 +1,11 @@
 package edu.wgu.d387_sample_code.rest;
 
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Locale;
 import java.util.ResourceBundle;
@@ -13,17 +15,7 @@ import java.util.ResourceBundle;
 @RequestMapping("/api")
 public class MessageMapping {
 
-    @RequestMapping(path = "/welcomeEn", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public String getWelcomeMessageEn() {
-        Locale locale = Locale.US;
-        return getWelcomeMessage(locale);
-    }
-
-    @RequestMapping(path = "/welcomeFr", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public String getWelcomeMessageFr() {
-        Locale locale = Locale.CANADA_FRENCH;
-        return getWelcomeMessage(locale);
-    }
+    TimeZoneConversion timeZoneConversion = new TimeZoneConversion();
 
     @RequestMapping("/welcome")
     public ResponseEntity<String> showWelcome(@RequestParam("lang") String lang) {
@@ -34,5 +26,10 @@ public class MessageMapping {
     public String getWelcomeMessage(Locale locale) {
         ResourceBundle resourceBundle = ResourceBundle.getBundle("welcome", locale);
         return resourceBundle.getString("welcome");
+    }
+
+    @RequestMapping(path = "/timezones")
+    public String showTimes() {
+        return timeZoneConversion.timeConversion();
     }
 }

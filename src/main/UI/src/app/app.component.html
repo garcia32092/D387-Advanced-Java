@@ -29,6 +29,9 @@
 
       <div class="row">
         <div class=""col-12>
+          <div>
+            <h2>Join us for an online live presentation held at the London Hotel on Oct 11, 2024 at {{ times }}</h2>
+          </div>
           <div class="gallery">
             <img src="assets/images/intro_room.jpg" alt="Intro Gallery Room Sample Pictures">
             <img src="assets/images/intro_pool.jpg" alt="Intro Gallery Pool Sample Pictures">
@@ -77,7 +80,9 @@
                 </td>
                 <td>
                   <strong>Room #: {{room.roomNumber}}</strong><br/>
-                  <strong>Price: ${{room.price}}</strong>
+                  <strong>Price: ${{room.price}}</strong><br/>
+                  <strong>Price: CA${{room.priceCA}}</strong><br/>
+                  <strong>Price: €{{room.priceEUR}}</strong>
                 </td>
                 <td>
                   <button type="submit" class="btn btn-primary" (click)="reserveRoom(room.id)">Reserve</button>

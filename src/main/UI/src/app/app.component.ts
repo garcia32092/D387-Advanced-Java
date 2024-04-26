@@ -30,12 +30,17 @@ export class AppComponent implements OnInit{
   // welcome message variables
   welcomeMessageEn: string = "";
   welcomeMessageFr: string = "";
+  // converted times variable
+  times: string = "";
 
     ngOnInit(){
 
       // fetch welcome messages and store them in variables
-      this.fetchWelcomeMessage('welcome?lang=en-US').subscribe(message => this.welcomeMessageEn = message);
-      this.fetchWelcomeMessage('welcome?lang=fr-CA').subscribe(message => this.welcomeMessageFr = message);
+      this.fetchMessage('welcome?lang=en-US').subscribe(message => this.welcomeMessageEn = message);
+      this.fetchMessage('welcome?lang=fr-CA').subscribe(message => this.welcomeMessageFr = message);
+
+      // fetch times and store them in variable
+      this.fetchMessage('timezones').subscribe(message => this.times = message);
 
       this.roomsearch= new FormGroup({
         checkin: new FormControl(' '),
@@ -55,14 +60,20 @@ export class AppComponent implements OnInit{
   }
 
   // fetch function for welcome messages
-  public fetchWelcomeMessage(path: string) {
+  public fetchMessage(path: string) {
     return this.httpClient.get(`${this.baseURL}/api/${path}`, { responseType: 'text' });
   }
 
     onSubmit({value,valid}:{value:Roomsearch,valid:boolean}){
       this.getAll().subscribe(
-
-        rooms => {console.log(Object.values(rooms)[0]);this.rooms=<Room[]>Object.values(rooms)[0]; }
+        rooms => {
+          console.log(Object.values(rooms)[0]);
+          this.rooms=<Room[]>Object.values(rooms)[0];
+          this.rooms.forEach(room => {
+            room.priceCA = room.price;
+            room.priceEUR = room.price;
+          })
+        }
 
 
       );
@@ -112,9 +123,11 @@ export interface Room{
   id:string;
   roomNumber:string;
   price:string;
+  priceCA:string;
+  priceEUR:string;
   links:string;
-
 }
+
 export class ReserveRoomRequest {
   roomId:string;
   checkin:string;
